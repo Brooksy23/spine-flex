@@ -1,0 +1,85 @@
+#include <LiquidCrystal.h>
+
+int cervical;
+int thoracic;
+int lumbar;
+int bulb = 6;
+int buzzer = 7;
+
+
+
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() { 
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(bulb, OUTPUT);
+
+  Serial.begin(9600);
+  lcd.begin(16, 2); 
+
+}
+
+void loop() {
+  
+int cervical = analogRead(A0);
+int thoracic = analogRead(A1);
+int lumbar = analogRead(A2);
+  
+Serial.print("cervical = ");
+Serial.println(cervical);
+Serial.print("\n");
+Serial.print("thoracic = ");
+Serial.println(thoracic);
+Serial.print("\n");
+Serial.print("lumbar = ");
+Serial.println(lumbar);
+Serial.print("\n");  
+
+if(cervical >= 880 )
+{
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Angle");
+  lcd.setCursor(2,2);
+  lcd.print((cervical-990)+(thoracic-990)+(lumbar-990));
+  delay(1000);   
+}
+if((cervical + thoracic + lumbar) > 3000 )
+  {
+  digitalWrite(bulb, HIGH);
+}
+  else
+    {
+    digitalWrite(bulb, LOW);
+    }
+ while(cervical == 1017 && thoracic == 1017 &&lumbar== 1017)
+   { lcd.clear();
+      lcd.setCursor(1,0);
+     lcd.print("Ouch!!!");
+     delay(1000);  
+     cervical = analogRead(A0);
+      thoracic = analogRead(A1);
+      lumbar = analogRead(A2);
+  
+   }
+ 
+    while(cervical == 990 && thoracic==990 &&lumbar== 990)
+      
+  { 
+    lcd.clear();
+
+     lcd.setCursor(1,0);
+     lcd.print("Neutral spine");
+     delay(1000);  
+     cervical = analogRead(A0);
+      thoracic = analogRead(A1);
+      lumbar = analogRead(A2);
+     
+      cervical = analogRead(A0);
+      thoracic = analogRead(A1);
+      lumbar = analogRead(A2);
+
+  }
